@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Linhagem Móveis Planejados — Catálogo</title>
+<style>
+  :root {
+    --navy: #1a2a5e;
+    --navy-dark: #101c42;
+    --navy-mid: #162350;
+    --gold: #c9956a;
+    --gold-light: #d4a97c;
+    --gold-pale: rgba(201,149,106,0.15);
+    --white: #ffffff;
+    --off-white: #f5f2ee;
+    --gray: #888;
+    --card-radius: 10px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Georgia',serif; background:var(--off-white); color:#222; }
+
+  /* ═══ HEADER ═══ */
+  header {
+    background:var(--navy);
+    position:sticky; top:0; z-index:100;
+    box-shadow:0 2px 24px rgba(0,0,0,0.35);
+  }
+  .header-inner {
+    max-width:1400px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 24px; gap:16px;
+  }
+  .logo-area {
+    display:flex; align-items:center; gap:16px;
+    text-decoration:none;
+  }
+  .logo-svg-wrap { width:52px; height:64px; flex-shrink:0; }
+  .brand-text { display:flex; flex-direction:column; justify-content:center; }
+  .brand-a {
+    font-size:1rem; color:var(--gold); font-style:italic;
+    line-height:1; margin-bottom:1px; font-family:'Georgia',serif;
+    letter-spacing:1px;
+  }
+  .brand-name {
+    font-size:1rem; letter-spacing:5px; color:var(--gold);
+    text-transform:uppercase; font-weight:normal;
+    font-family:'Georgia',serif; line-height:1.15;
+  }
+  .brand-sub {
+    font-size:0.52rem; letter-spacing:3.5px; color:rgba(255,255,255,0.45);
+    text-transform:uppercase; margin-top:3px; font-family:'Georgia',serif;
+  }
+
+  /* ═══ FILTROS ═══ */
+  .filters {
+    display:flex; gap:6px; align-items:center;
+    padding:8px 24px;
+    border-top:1px solid rgba(255,255,255,0.07);
+    overflow-x:auto; -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .filters::-webkit-scrollbar { display:none; }
+  .filter-btn {
+    background:transparent; border:1px solid rgba(201,149,106,0.35);
+    color:rgba(255,255,255,0.75); padding:6px 15px; border-radius:30px;
+    cursor:pointer; font-size:0.7rem; letter-spacing:1.5px;
+    transition:all 0.2s; text-transform:uppercase; white-space:nowrap;
+    font-family:'Georgia',serif; flex-shrink:0;
+  }
+  .filter-btn:hover { border-color:var(--gold); color:var(--gold); }
+  .filter-btn.active {
+    background:var(--gold); color:var(--navy);
+    border-color:var(--gold); font-weight:bold;
+  }
+  .filter-btn .cnt {
+    background:rgba(255,255,255,0.18); border-radius:20px;
+    padding:1px 6px; font-size:0.65rem; margin-left:5px;
+  }
+  .filter-btn.active .cnt { background:rgba(26,42,94,0.22); }
+
+  /* ═══ HERO ═══ */
+  .hero {
+    background:var(--navy-dark);
+    color:white; text-align:center;
+    padding:60px 24px 56px;
+    position:relative; overflow:hidden;
+  }
+  .hero::before {
+    content:''; position:absolute; top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    width:380px; height:460px;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 120 150' xmlns='http://www.w3.org/2000/svg' fill='none'%3E%3Ccircle cx='60' cy='4' r='2' fill='%23c9956a' opacity='0.4'/%3E%3Cline x1='60' y1='6' x2='60' y2='13' stroke='%23c9956a' stroke-width='1' opacity='0.4'/%3E%3Cellipse cx='60' cy='76' rx='48' ry='68' stroke='%23c9956a' stroke-width='1.2' opacity='0.18'/%3E%3Cellipse cx='60' cy='76' rx='41' ry='60' stroke='%23c9956a' stroke-width='1' opacity='0.18'/%3E%3Cellipse cx='60' cy='76' rx='34' ry='52' stroke='%23c9956a' stroke-width='1' opacity='0.18'/%3E%3Cellipse cx='60' cy='76' rx='27' ry='44' stroke='%23c9956a' stroke-width='1' opacity='0.18'/%3E%3Cellipse cx='60' cy='76' rx='20' ry='36' stroke='%23c9956a' stroke-width='1' opacity='0.18'/%3E%3Cellipse cx='60' cy='76' rx='13' ry='28' stroke='%23c9956a' stroke-width='1' opacity='0.18'/%3E%3Cellipse cx='60' cy='76' rx='6' ry='20' stroke='%23c9956a' stroke-width='1' opacity='0.18'/%3E%3C/svg%3E");
+    background-size:contain; background-repeat:no-repeat; background-position:center;
+    opacity:0.5; pointer-events:none;
+  }
+  .hero::after {
+    content:''; position:absolute; top:0; left:0; right:0; bottom:0;
+    background:radial-gradient(ellipse at 50% 50%,rgba(201,149,106,0.06) 0%,transparent 70%);
+    pointer-events:none;
+  }
+  .hero-content { position:relative; z-index:1; }
+  .hero-logo-big { width:72px; margin:0 auto 18px; display:block; }
+  .hero h1 {
+    font-size:clamp(1rem,3.5vw,1.3rem);
+    font-style:italic; color:var(--gold);
+    letter-spacing:2px; font-weight:normal; margin-bottom:2px;
+  }
+  .hero h2 {
+    font-size:clamp(1.6rem,6vw,2.8rem);
+    font-weight:normal; letter-spacing:8px;
+    color:var(--gold); text-transform:uppercase; margin-bottom:4px;
+  }
+  .hero p {
+    font-size:0.72rem; color:rgba(255,255,255,0.45);
+    letter-spacing:4px; text-transform:uppercase;
+  }
+  .hero-divider { width:48px; height:1px; background:var(--gold); margin:20px auto; opacity:0.7; }
+
+  /* ═══ CONTROLS ═══ */
+  .controls {
+    max-width:1400px; margin:22px auto 0; padding:0 16px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .search-box { flex:1; position:relative; }
+  .search-box input {
+    width:100%; padding:11px 16px 11px 40px;
+    border:1.5px solid #ddd; border-radius:30px;
+    font-size:0.88rem; outline:none; transition:border 0.2s;
+    font-family:'Georgia',serif; background:white; color:#333;
+  }
+  .search-box input:focus { border-color:var(--gold); }
+  .search-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--gray); font-size:0.85rem; }
+  .count-badge {
+    background:var(--navy); color:white; padding:9px 16px; border-radius:30px;
+    font-size:0.72rem; letter-spacing:1.5px; white-space:nowrap; flex-shrink:0;
+    font-family:'Georgia',serif;
+  }
+
+  /* ═══ GALERIA ═══ */
+  .gallery-section { max-width:1400px; margin:18px auto 70px; padding:0 12px; }
+  .gallery-grid {
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px;
+  }
+  .photo-card {
+    background:white; border-radius:var(--card-radius); overflow:hidden;
+    box-shadow:0 2px 12px rgba(26,42,94,0.08);
+    transition:transform 0.28s ease, box-shadow 0.28s ease;
+    cursor:pointer; display:flex; flex-direction:column;
+  }
+  .photo-card:hover { transform:translateY(-5px); box-shadow:0 12px 30px rgba(26,42,94,0.16); }
+  .photo-card .img-wrap { overflow:hidden; }
+  .photo-card img { width:100%; height:230px; object-fit:cover; display:block; transition:transform 0.4s ease; }
+  .photo-card:hover img { transform:scale(1.05); }
+  .card-body { padding:10px 13px 13px; flex:1; display:flex; flex-direction:column; gap:5px; }
+  .card-cat { font-size:0.58rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); font-weight:bold; }
+  .card-desc { font-size:0.77rem; color:#666; line-height:1.5; font-style:italic; }
+
+  /* ═══ LIGHTBOX ═══ */
+  .lightbox {
+    display:none; position:fixed; inset:0; background:rgba(6,10,28,0.97);
+    z-index:1000; justify-content:center; align-items:center;
+    flex-direction:column; padding:20px;
+  }
+  .lightbox.open { display:flex; }
+  .lightbox img { max-width:100%; max-height:65vh; border-radius:8px; object-fit:contain; }
+  .lb-cat-label { margin-top:10px; font-size:0.6rem; letter-spacing:3px; color:var(--gold); text-transform:uppercase; }
+  .lb-desc { margin-top:6px; max-width:580px; text-align:center; font-size:0.8rem; color:rgba(255,255,255,0.6); font-style:italic; line-height:1.55; }
+  .lb-controls { display:flex; gap:14px; margin-top:16px; align-items:center; }
+  .lb-btn {
+    background:rgba(255,255,255,0.1); border:1px solid rgba(201,149,106,0.3);
+    color:white; width:46px; height:46px; border-radius:50%;
+    font-size:1.2rem; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:all 0.2s; -webkit-tap-highlight-color:transparent;
+  }
+  .lb-btn:active, .lb-btn:hover { background:var(--gold); color:var(--navy); }
+  .lb-counter { color:rgba(255,255,255,0.45); font-size:0.78rem; letter-spacing:2px; min-width:60px; text-align:center; }
+  .lb-close {
+    position:absolute; top:16px; right:20px; background:none; border:none;
+    color:rgba(255,255,255,0.7); font-size:1.8rem; cursor:pointer;
+    -webkit-tap-highlight-color:transparent; padding:8px; transition:color 0.2s;
+  }
+  .lb-close:hover { color:var(--gold); }
+
+  /* ═══ FOOTER ═══ */
+  footer {
+    background:var(--navy-dark); color:rgba(255,255,255,0.8);
+    padding:44px 24px 24px; border-top:1px solid rgba(201,149,106,0.2);
+  }
+  .footer-logo { display:flex; align-items:center; gap:14px; margin-bottom:32px; justify-content:center; }
+  .footer-logo-svg { width:38px; height:46px; }
+  .footer-brand { text-align:left; }
+  .footer-brand-a { font-size:0.85rem; color:var(--gold); font-style:italic; }
+  .footer-brand-name { font-size:0.85rem; letter-spacing:4px; color:var(--gold); text-transform:uppercase; font-weight:normal; }
+  .footer-brand-sub { font-size:0.48rem; letter-spacing:3px; color:rgba(255,255,255,0.35); text-transform:uppercase; margin-top:2px; }
+  .footer-inner { max-width:800px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr 1fr; gap:28px; margin-bottom:28px; }
+  .footer-col h3 { color:var(--gold); font-size:0.6rem; letter-spacing:3px; text-transform:uppercase; margin-bottom:12px; font-weight:normal; }
+  .footer-col p, .footer-col a { font-size:0.82rem; line-height:1.9; color:rgba(255,255,255,0.55); text-decoration:none; display:block; }
+  .footer-col a:hover { color:var(--gold); }
+  .footer-divider { border:none; border-top:1px solid rgba(255,255,255,0.07); margin-bottom:16px; }
+  .footer-bottom { text-align:center; font-size:0.65rem; color:rgba(255,255,255,0.25); letter-spacing:2.5px; text-transform:uppercase; }
+
+  /* ═══ WHATSAPP ═══ */
+  .wa-float {
+    position:fixed; bottom:24px; right:20px;
+    background:#25D366; color:white; border:none; border-radius:50px;
+    padding:13px 20px; font-size:0.85rem; font-weight:bold;
+    box-shadow:0 4px 20px rgba(37,211,102,0.4);
+    z-index:200; display:flex; align-items:center; gap:9px;
+    text-decoration:none; transition:transform 0.2s, box-shadow 0.2s;
+    font-family:'Georgia',serif;
+  }
+  .wa-float:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(37,211,102,0.5); }
+
+  /* ═══ MOBILE ═══ */
+  @media(max-width:600px) {
+    .gallery-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+    .photo-card img { height:160px; }
+    .card-desc { font-size:0.7rem; }
+    .footer-inner { grid-template-columns:1fr; gap:16px; }
+    .brand-name { font-size:0.9rem; letter-spacing:3px; }
+    .hero h2 { letter-spacing:5px; }
+    .lightbox img { max-height:52vh; }
+    .logo-svg-wrap { width:40px; height:50px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo-area" href="/">
+      <div class="logo-svg-wrap">
+        <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <circle cx="40" cy="3" r="1.8" fill="#c9956a"/>
+          <line x1="40" y1="4.8" x2="40" y2="11" stroke="#c9956a" stroke-width="1"/>
+          <ellipse cx="40" cy="56" rx="32" ry="42" stroke="#c9956a" stroke-width="1.4"/>
+          <ellipse cx="40" cy="56" rx="26" ry="35" stroke="#c9956a" stroke-width="0.9" opacity="0.9"/>
+          <ellipse cx="40" cy="56" rx="20" ry="28" stroke="#c9956a" stroke-width="0.9" opacity="0.9"/>
+          <ellipse cx="40" cy="56" rx="14" ry="21" stroke="#c9956a" stroke-width="0.9" opacity="0.9"/>
+          <ellipse cx="40" cy="56" rx="8" ry="14" stroke="#c9956a" stroke-width="0.9" opacity="0.9"/>
+          <ellipse cx="40" cy="56" rx="3.5" ry="7" stroke="#c9956a" stroke-width="0.9" opacity="0.9"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <div class="brand-a">𝒜</div>
+        <div class="brand-name">Linhagem</div>
+        <div class="brand-sub">Móveis Planejados</div>
+      </div>
+    </a>
+  </div>
+  <div class="filters" id="filtersBar">
+    <button class="filter-btn active" onclick="setFilter('todos',this)">Todos <span class="cnt">200</span></button>
+    <button class="filter-btn" onclick="setFilter('comercial',this)">Comercial <span class="cnt">32</span></button>
+    <button class="filter-btn" onclick="setFilter('dormitorio',this)">Dormitórios <span class="cnt">76</span></button>
+    <button class="filter-btn" onclick="setFilter('sala',this)">Salas &amp; Jantar <span class="cnt">48</span></button>
+    <button class="filter-btn" onclick="setFilter('closet',this)">Closets <span class="cnt">17</span></button>
+    <button class="filter-btn" onclick="setFilter('banheiro',this)">Banheiros <span class="cnt">2</span></button>
+    <button class="filter-btn" onclick="setFilter('detalhe',this)">Detalhes <span class="cnt">25</span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <svg class="hero-logo-big" viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <circle cx="40" cy="3" r="1.8" fill="#c9956a"/>
+      <line x1="40" y1="4.8" x2="40" y2="11" stroke="#c9956a" stroke-width="1"/>
+      <ellipse cx="40" cy="56" rx="32" ry="42" stroke="#c9956a" stroke-width="1.4"/>
+      <ellipse cx="40" cy="56" rx="26" ry="35" stroke="#c9956a" stroke-width="0.9" opacity="0.9"/>
+      <ellipse cx="40" cy="56" rx="20" ry="28" stroke="#c9956a" stroke-width="0.9" opacity="0.9"/>
+      <ellipse cx="40" cy="56" rx="14" ry="21" stroke="#c9956a" stroke-width="0.9" opacity="0.9"/>
+      <ellipse cx="40" cy="56" rx="8" ry="14" stroke="#c9956a" stroke-width="0.9" opacity="0.9"/>
+      <ellipse cx="40" cy="56" rx="3.5" ry="7" stroke="#c9956a" stroke-width="0.9" opacity="0.9"/>
+    </svg>
+    <h1>𝒜</h1>
+    <h2>Linhagem</h2>
+    <p>Móveis Planejados · Itapema — SC</p>
+    <div class="hero-divider"></div>
+  </div>
+</section>
+
+<div class="controls">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Buscar por ambiente, material..." oninput="applyFilters()" />
+  </div>
+  <div class="count-badge" id="countBadge">200 fotos</div>
+</div>
+
+<section class="gallery-section">
+  <div class="gallery-grid" id="galleryGrid"></div>
+</section>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLb()">✕</button>
+  <img id="lbImg" src="" alt="" />
+  <div class="lb-cat-label" id="lbCat"></div>
+  <div class="lb-desc" id="lbDesc"></div>
+  <div class="lb-controls">
+    <button class="lb-btn" onclick="moveLb(-1)">&#8592;</button>
+    <span class="lb-counter" id="lbCounter">1/200</span>
+    <button class="lb-btn" onclick="moveLb(1)">&#8594;</button>
+  </div>
+</div>
+
+<a class="wa-float" href="https://wa.me/5547996235988?text=Ol%C3%A1!%20Vi%20o%20cat%C3%A1logo%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  Fale conosco
+</a>
+
+<footer>
+  <div class="footer-logo">
+    <svg class="footer-logo-svg" viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <circle cx="40" cy="3" r="1.8" fill="#c9956a"/>
+      <line x1="40" y1="4.8" x2="40" y2="11" stroke="#c9956a" stroke-width="1"/>
+      <ellipse cx="40" cy="56" rx="32" ry="42" stroke="#c9956a" stroke-width="1.4"/>
+      <ellipse cx="40" cy="56" rx="26" ry="35" stroke="#c9956a" stroke-width="0.9" opacity="0.9"/>
+      <ellipse cx="40" cy="56" rx="20" ry="28" stroke="#c9956a" stroke-width="0.9" opacity="0.9"/>
+      <ellipse cx="40" cy="56" rx="14" ry="21" stroke="#c9956a" stroke-width="0.9" opacity="0.9"/>
+      <ellipse cx="40" cy="56" rx="8" ry="14" stroke="#c9956a" stroke-width="0.9" opacity="0.9"/>
+      <ellipse cx="40" cy="56" rx="3.5" ry="7" stroke="#c9956a" stroke-width="0.9" opacity="0.9"/>
+    </svg>
+    <div class="footer-brand">
+      <div class="footer-brand-a">𝒜</div>
+      <div class="footer-brand-name">Linhagem</div>
+      <div class="footer-brand-sub">Móveis Planejados</div>
+    </div>
+  </div>
+  <div class="footer-inner">
+    <div class="footer-col">
+      <h3>Localização</h3>
+      <p>Rua 240, 506 — Sala 02</p>
+      <p>Andorinha, Itapema — SC</p>
+      <p>CEP 88220-000</p>
+    </div>
+    <div class="footer-col">
+      <h3>Contato</h3>
+      <a href="tel:+5547996235988">(47) 99623-5988</a>
+      <a href="https://wa.me/5547996235988" target="_blank">WhatsApp</a>
+      <a href="https://www.instagram.com/alinhagem.moveis/" target="_blank">@alinhagem.moveis</a>
+    </div>
+    <div class="footer-col">
+      <h3>Atendimento</h3>
+      <p>Segunda a Sexta</p>
+      <p>Aberto até às 18h00</p>
+    </div>
+  </div>
+  <hr class="footer-divider"/>
+  <div class="footer-bottom">© 2026 A Linhagem Móveis Planejados — Itapema, SC</div>
+</footer>
+
+<script>
+/* ALL_PHOTOS será injetado pelo script de deploy */
+const ALL_PHOTOS=[];
+
+let activeFilter='todos', filtered=[], lbIdx=0;
+function catLabel(c){return{dormitorio:'Dormitório',sala:'Sala & Jantar',closet:'Closet',banheiro:'Banheiro',detalhe:'Detalhe',comercial:'Comercial'}[c]||c;}
+function applyFilters(){
+  const q=(document.getElementById('searchInput').value||'').toLowerCase();
+  filtered=ALL_PHOTOS.filter(p=>{
+    const catOk=activeFilter==='todos'||p.cat===activeFilter;
+    const txtOk=!q||(p.desc||'').toLowerCase().includes(q)||(p.cat||'').toLowerCase().includes(q);
+    return catOk&&txtOk;
+  });
+  renderGallery();
+}
+function setFilter(cat,btn){
+  activeFilter=cat;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('searchInput').value='';
+  applyFilters();
+}
+function renderGallery(){
+  const grid=document.getElementById('galleryGrid');
+  document.getElementById('countBadge').textContent=filtered.length+' foto'+(filtered.length!==1?'s':'');
+  grid.innerHTML=filtered.map((p,i)=>`
+    <div class="photo-card" onclick="openLb(${i})">
+      <div class="img-wrap"><img src="${p.thumb||p.src}" alt="${p.desc||''}" loading="lazy" decoding="async"/></div>
+      <div class="card-body">
+        <div class="card-cat">${catLabel(p.cat)}</div>
+        <div class="card-desc">${p.desc||''}</div>
+      </div>
+    </div>`).join('');
+}
+function openLb(i){lbIdx=i;showLb();document.getElementById('lightbox').classList.add('open');}
+function closeLb(){document.getElementById('lightbox').classList.remove('open');}
+function moveLb(d){lbIdx=(lbIdx+d+filtered.length)%filtered.length;showLb();}
+function showLb(){
+  const p=filtered[lbIdx];
+  const img=document.getElementById('lbImg');img.src=p.src;
+  [1,-1].forEach(d=>{const n=filtered[(lbIdx+d+filtered.length)%filtered.length];if(n)new Image().src=n.src;});
+  document.getElementById('lbCat').textContent=catLabel(p.cat);
+  document.getElementById('lbDesc').textContent=p.desc||'';
+  document.getElementById('lbCounter').textContent=(lbIdx+1)+'/'+filtered.length;
+}
+let tsX=0;
+document.getElementById('lightbox').addEventListener('touchstart',e=>{tsX=e.touches[0].clientX;},{passive:true});
+document.getElementById('lightbox').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tsX;if(Math.abs(dx)>50)moveLb(dx<0?1:-1);});
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('lightbox').classList.contains('open'))return;
+  if(e.key==='ArrowRight')moveLb(1);else if(e.key==='ArrowLeft')moveLb(-1);else if(e.key==='Escape')closeLb();
+});
+applyFilters();
+</script>
+</body>
+</html>
