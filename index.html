@@ -347,6 +347,9 @@ const ALL_PHOTOS=[{"src": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2w
 /* Remove duplicatas pelo src */
 const PHOTOS=ALL_PHOTOS.filter((p,i,a)=>a.findIndex(x=>x.src===p.src)===i);
 
+/* Embaralha para apresentação aleatória a cada carregamento */
+for(let i=PHOTOS.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[PHOTOS[i],PHOTOS[j]]=[PHOTOS[j],PHOTOS[i]];}
+
 /* Números dos filtros contados a partir das fotos; filtro vazio fica escondido */
 document.querySelectorAll('.filter-btn[data-cat]').forEach(b=>{
   const c=b.dataset.cat, n=c==='todos'?PHOTOS.length:PHOTOS.filter(p=>p.cat===c).length;
