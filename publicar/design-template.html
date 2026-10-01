@@ -250,13 +250,14 @@
     </a>
   </div>
   <div class="filters" id="filtersBar">
-    <button class="filter-btn active" onclick="setFilter('todos',this)">Todos <span class="cnt">200</span></button>
-    <button class="filter-btn" onclick="setFilter('comercial',this)">Comercial <span class="cnt">32</span></button>
-    <button class="filter-btn" onclick="setFilter('dormitorio',this)">Dormitórios <span class="cnt">76</span></button>
-    <button class="filter-btn" onclick="setFilter('sala',this)">Salas &amp; Jantar <span class="cnt">48</span></button>
-    <button class="filter-btn" onclick="setFilter('closet',this)">Closets <span class="cnt">17</span></button>
-    <button class="filter-btn" onclick="setFilter('banheiro',this)">Banheiros <span class="cnt">2</span></button>
-    <button class="filter-btn" onclick="setFilter('detalhe',this)">Detalhes <span class="cnt">25</span></button>
+    <button class="filter-btn active" data-cat="todos" onclick="setFilter('todos',this)">Todos <span class="cnt">200</span></button>
+    <button class="filter-btn" data-cat="comercial" onclick="setFilter('comercial',this)">Comercial <span class="cnt">32</span></button>
+    <button class="filter-btn" data-cat="dormitorio" onclick="setFilter('dormitorio',this)">Dormitórios <span class="cnt">76</span></button>
+    <button class="filter-btn" data-cat="sala" onclick="setFilter('sala',this)">Salas &amp; Jantar <span class="cnt">48</span></button>
+    <button class="filter-btn" data-cat="cozinha" onclick="setFilter('cozinha',this)">Cozinhas <span class="cnt">3</span></button>
+    <button class="filter-btn" data-cat="closet" onclick="setFilter('closet',this)">Closets <span class="cnt">17</span></button>
+    <button class="filter-btn" data-cat="banheiro" onclick="setFilter('banheiro',this)">Banheiros <span class="cnt">2</span></button>
+    <button class="filter-btn" data-cat="detalhe" onclick="setFilter('detalhe',this)">Detalhes <span class="cnt">25</span></button>
   </div>
 </header>
 
@@ -346,8 +347,15 @@ const ALL_PHOTOS=[];
 /* Remove duplicatas pelo src */
 const PHOTOS=ALL_PHOTOS.filter((p,i,a)=>a.findIndex(x=>x.src===p.src)===i);
 
+/* Números dos filtros contados a partir das fotos; filtro vazio fica escondido */
+document.querySelectorAll('.filter-btn[data-cat]').forEach(b=>{
+  const c=b.dataset.cat, n=c==='todos'?PHOTOS.length:PHOTOS.filter(p=>p.cat===c).length;
+  b.querySelector('.cnt').textContent=n;
+  if(!n&&c!=='todos')b.style.display='none';
+});
+
 let activeFilter='todos', filtered=[], lbIdx=0;
-function catLabel(c){return{dormitorio:'Dormitório',sala:'Sala & Jantar',closet:'Closet',banheiro:'Banheiro',detalhe:'Detalhe',comercial:'Comercial'}[c]||c;}
+function catLabel(c){return{dormitorio:'Dormitório',sala:'Sala & Jantar',cozinha:'Cozinha',closet:'Closet',banheiro:'Banheiro',detalhe:'Detalhe',comercial:'Comercial'}[c]||c;}
 function applyFilters(){
   const q=(document.getElementById('searchInput').value||'').toLowerCase();
   filtered=PHOTOS.filter(p=>{
