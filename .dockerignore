@@ -1,0 +1,15 @@
+.git
+.env
+.env.*
+node_modules
+.next
+__pycache__
+*.pyc
+.venv
+.pytest_cache
+.DS_Store
+*.pfx
+*.p12
+*.key
+*.pem
+dados/
